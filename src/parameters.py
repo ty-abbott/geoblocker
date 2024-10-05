@@ -4,6 +4,7 @@ class parameters:
     list = psutil.net_if_addrs()
     adapter = ""
     isYes = False
+    adapterList = []
 
 #we will need network adapter, and eventually probably email(s) and other stuff 
 #could be cool to be able to monitor multiple network adapters... might as well build that functionality now
@@ -18,8 +19,8 @@ class parameters:
         print("\n")
         print (self.list.keys())
         if self.adapter in self.list.keys():
-            print("its in there")
-        return
+            return True
+        return False
     
     def __input_verify(self, input):
         if (input == "y" or input == "Y"):
@@ -43,8 +44,11 @@ class parameters:
             confirm = input("y or n: ")
             valid = self.__input_verify(confirm)
             if (valid == True and self.isYes == True):
-                interfaceAdded = True #change this
-                self.__verify()
+                inThere = self.__verify()
+                if(inThere == True):
+                    self.adapterList.append(self.adapter)
+                
+
             #input and error handling needs to be added of course.
 
             # there needs to be a way to check that this is a valid adapter 

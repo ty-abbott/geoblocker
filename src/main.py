@@ -12,9 +12,11 @@ def main():
      - get the list of IPs that are currently in the buffer for analysis 
       
     '''
-    
+    #get the adapters from database and if there are some returned then we can skip the getting of the paramters via function 
     paramObject = parameters()
     paramObject.getParams()
+
+
 #the above will essentially just return an object of data that we will need to get this party started 
 # though I will need to have a check of state so that it doesnt pop every single time the program starts 
     while True:
