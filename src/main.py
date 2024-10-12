@@ -1,6 +1,5 @@
 import logging 
-import subprocess 
-from network import *
+from capture_stage import *
 from parameters import parameters
 from data import data
 
@@ -33,7 +32,23 @@ def main():
     while True:
         try:
             logging.info("running")
-            network(adapterList)
+            capObj = capture()
+            capObj.captureStart(adapterList)
+
+            command = input()
+
+            match command:
+                case "add":
+                    continue
+                case "list":
+                      continue
+                case "report":
+                    continue
+                case "stop":
+                    continue
+
+
+
             #this will create a unique list of IP addresses that can be used for the analysis  
 
         
