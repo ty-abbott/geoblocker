@@ -2,6 +2,8 @@ import logging
 import subprocess 
 from network import *
 from parameters import parameters
+from data import data
+
 
 def main():
     '''
@@ -13,8 +15,17 @@ def main():
       
     '''
     #get the adapters from database and if there are some returned then we can skip the getting of the paramters via function 
-    paramObject = parameters()
-    paramObject.getParams()
+    data = data()
+
+    adapterList = data.getAdapters()
+    
+    if not adapterList:
+        paramObject = parameters()
+        paramObject.getParams()
+        adapterList = paramObject.adapterList
+
+
+    
 
 
 #the above will essentially just return an object of data that we will need to get this party started 
@@ -22,7 +33,7 @@ def main():
     while True:
         try:
             logging.info("running")
-            list = getListIP(paramObject.adapter)
+            network(adapterList)
             #this will create a unique list of IP addresses that can be used for the analysis  
 
         
