@@ -1,5 +1,5 @@
 from capture_stage import capture
 test = capture()
-list = ['ab', 'ac', 'ad']
+list = ['eth0']
 
 test.captureStart(list)

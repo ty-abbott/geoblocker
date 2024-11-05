@@ -2,6 +2,7 @@ import pyshark
 from capture import interface
 import threading
 import time
+from scapy.all import *
 #dependency 
 
 class capture:
@@ -10,8 +11,6 @@ class capture:
 
     def captureStart(self, adapterList: list) -> None:
         
-
-        print(adapterList[0])
         for i in range(len(adapterList)):
             item = interface(adapterList[i])
             stopEvent = threading.Event()
@@ -20,6 +19,7 @@ class capture:
             self.threads[item.interface] = thread
             thread.start()
         
+        time.sleep(60)
         self.captureStop()
         return 
 
@@ -46,16 +46,21 @@ class capture:
     def captureStop(self):
         for i in self.stop_events.values():
             i.set()
+            print("stopppingggg...")
 
         for i in self.threads.values():
             i.join()
             
 
-    def getListIP(self, thread, stopEvent):
+    def getListIP(self, interfaceName, stopEvent):
         #here is where we will get the set of IPs 
-        #capture = pyshark.LiveCapture(interface=adapter)
-        while not stopEvent.is_set():
-            print(thread)
-            time.sleep(3) #we will do the actual pyshark packet capture here. The adding IP logic will be called from here. 
-        print("task is stopping")
+        
+        while not stopEvent.is_set(): #we will do the actual pyshark packet capture here. The adding IP logic will be called from here. 
+            print("listening")
+            packets = sniff(iface="eth0", count=1) 
+            for i in packets:
+                if i.haslayer(IP):
+                    print(i[IP].src)
+            
+        print(f"task {interfaceName} is stopping" )
         return 

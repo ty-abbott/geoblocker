@@ -14,21 +14,25 @@ def main():
       
     '''
     #get the adapters from database and if there are some returned then we can skip the getting of the paramters via function 
-    data = data()
+    db = data()
 
-    adapterList = data.getAdapters()
+    adapterList = db.getAdapters()
     
     if not adapterList:
         paramObject = parameters()
         paramObject.getParams()
         adapterList = paramObject.adapterList
+    #when and where to save the interfaces to the database? 
+
+
 
 
     
 
 
 #the above will essentially just return an object of data that we will need to get this party started 
-# though I will need to have a check of state so that it doesnt pop every single time the program starts 
+# we can create this loop to just be checking for input, eventually there will be a systemd service that is running
+# so all we will need to do is have a command/alias that will gather the input here. 
     while True:
         try:
             logging.info("running")
@@ -36,7 +40,6 @@ def main():
             capObj.captureStart(adapterList)
 
             command = input()
-
             match command:
                 case "add":
                     continue

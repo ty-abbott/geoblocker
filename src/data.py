@@ -1,8 +1,9 @@
-from tinydb import TinyDB, Query 
+from tinydb import TinyDB, Query, where
+
 
 class data: 
-    db1 = TinyDB('/data/adapters.json')
-    db2 = TinyDB('/data/ip.json')
+    db1 = TinyDB('data/adapters.json')
+    db2 = TinyDB('data/ip.json')
 
     def addIP(ip):
 
@@ -16,6 +17,6 @@ class data:
         
         return 
     
-    def getAdapters():
+    def getAdapters(self):
         
         return 

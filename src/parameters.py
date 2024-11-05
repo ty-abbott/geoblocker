@@ -1,10 +1,13 @@
 import psutil
+import time
 
 class parameters:
+    def __init__(self, adapters: list=[]):
+        self.adapterList = adapters
     list = psutil.net_if_addrs()
     adapter = ""
     isYes = False
-    adapterList = []
+    # adapterList = []
 
 #we will need network adapter, and eventually probably email(s) and other stuff 
 #could be cool to be able to monitor multiple network adapters... might as well build that functionality now
@@ -18,8 +21,11 @@ class parameters:
     def __verify(self):
         print("\n")
         print (self.list.keys())
+        print(self.adapter)
         if self.adapter in self.list.keys():
             return True
+        print("Not a valid network adapter.\n")
+        time.sleep(3)
         return False
     
     def __input_verify(self, input):
@@ -39,7 +45,7 @@ class parameters:
         while(True):
             self.__listInterfaces()
             self.adapter = input("Adapter: ")
-            print("Network Adapter: " + self.adapter)
+        
             print (f"{self.adapter} was chosen. Is this correct?")
             confirm = input("y or n: ")
             valid = self.__input_verify(confirm)
@@ -47,7 +53,8 @@ class parameters:
                 inThere = self.__verify()
                 if(inThere == True):
                     self.adapterList.append(self.adapter)
-                
+                    interfaceAdded = True
+
 
             #input and error handling needs to be added of course.
 
