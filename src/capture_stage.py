@@ -8,7 +8,7 @@ from scapy.all import *
 class capture:
     threads = {}
     stop_events = {}
-
+#pass in the data object so that it can be sent to informer ---- we may need a constructor for this class to initilize it outright
     def captureStart(self, adapterList: list) -> None:
         
         for i in range(len(adapterList)):
@@ -42,7 +42,7 @@ class capture:
     *** there really should just be stop and go in this fle
 
     '''
-
+# global interpreter lock? Use multiprocessing to get around it? 
     def captureStop(self):
         for i in self.stop_events.values():
             i.set()
@@ -55,12 +55,19 @@ class capture:
     def getListIP(self, interfaceName, stopEvent):
         #here is where we will get the set of IPs 
         
-        while not stopEvent.is_set(): #we will do the actual pyshark packet capture here. The adding IP logic will be called from here. 
+        while not stopEvent.is_set(): #we will do the actual packet capture here. The adding IP logic will be called from here. 
             print("listening")
             packets = sniff(iface="eth0", count=1) 
             for i in packets:
                 if i.haslayer(IP):
                     print(i[IP].src)
-            
+                    informer(i[IP].src)
+
+        # so we get the IP of the packets here. what would be the most effective way to check if the IP is already known. I want this to be quick...as quick as python can be 
+           # i think that if we have a dictionary or other quick lookup data structure that is loaded with the values from the database
+        # we then do lookups to the data structure. 
+        # value in there 
+        # yes --> move on
+        # no --> add to the data structure and to the data base. 
         print(f"task {interfaceName} is stopping" )
         return 
