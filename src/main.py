@@ -37,7 +37,7 @@ def main():
         try:
             logging.info("running")
             capObj = capture()
-            capObj.captureStart(adapterList)
+            capObj.captureStart(adapterList, db)
 
             command = input()
             match command:

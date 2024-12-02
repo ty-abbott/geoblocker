@@ -1,21 +1,22 @@
-import pyshark
 from capture import interface
 import threading
 import time
 from scapy.all import *
+from data import data
+from informer import checker
 #dependency 
 
 class capture:
     threads = {}
     stop_events = {}
 #pass in the data object so that it can be sent to informer ---- we may need a constructor for this class to initilize it outright
-    def captureStart(self, adapterList: list) -> None:
+    def captureStart(self, adapterList: list, stateObj: data) -> None:
         
         for i in range(len(adapterList)):
             item = interface(adapterList[i])
             stopEvent = threading.Event()
             self.stop_events[item.interface] = stopEvent
-            thread = threading.Thread(target=self.getListIP, args=(item.interface,stopEvent))
+            thread = threading.Thread(target=self.getListIP, args=(item.interface,stopEvent,stateObj))
             self.threads[item.interface] = thread
             thread.start()
         
@@ -42,7 +43,7 @@ class capture:
     *** there really should just be stop and go in this fle
 
     '''
-# global interpreter lock? Use multiprocessing to get around it? 
+
     def captureStop(self):
         for i in self.stop_events.values():
             i.set()
@@ -52,7 +53,7 @@ class capture:
             i.join()
             
 
-    def getListIP(self, interfaceName, stopEvent):
+    def getListIP(self, interfaceName, stopEvent, stateObj):
         #here is where we will get the set of IPs 
         
         while not stopEvent.is_set(): #we will do the actual packet capture here. The adding IP logic will be called from here. 
@@ -61,7 +62,7 @@ class capture:
             for i in packets:
                 if i.haslayer(IP):
                     print(i[IP].src)
-                    informer(i[IP].src)
+                    checker(i[IP].src, stateObj)
 
         # so we get the IP of the packets here. what would be the most effective way to check if the IP is already known. I want this to be quick...as quick as python can be 
            # i think that if we have a dictionary or other quick lookup data structure that is loaded with the values from the database

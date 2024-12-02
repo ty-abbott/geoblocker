@@ -1,4 +1,4 @@
-from data.py import *
+from threading import Lock
 
 '''
     here is where we will do the actual threat intelligence:
@@ -7,8 +7,17 @@ from data.py import *
 3. its going to essentially do all the data fleshing out parts
 
 we are going to need an object that holds our dictionaries and data structures 
-race conditions need to be avoided with data object. The best way to do this would be through a queue or through locks with threading library 
+with lock: 
+- this ^^ would work better instead for mutex. It ensures that locks are lifted
 
 '''
-
+lock = Lock()
+def checker(ip, stateObj):
+    with lock:
+        isThere = stateObj.getIP(ip)
+        if isThere == True:
+            return 
+        else: 
+            #do stuff
+    return
 
