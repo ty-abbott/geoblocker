@@ -20,4 +20,4 @@ def checker(ip, stateObj):
         else: 
             #do stuff
     return
-
+#TODO - basically figure out the do stuff and test that this works

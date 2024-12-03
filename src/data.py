@@ -3,6 +3,10 @@ import sqlite3
 
 class data: 
     ip_dict = {}
+    conn = sqlite3.connect('data/ip.db')
+    cursor = conn.cursor()
+
+
 
     def addAdapter(adapter):
 
@@ -13,7 +17,16 @@ class data:
             self.ip_dict[ip]["requests"] += 1
             return True
         self.ip_dict[ip] = {"requests": 1}
+        addDatabase()
         return False 
     
     def getAdapters(self):
         return
+
+    def addDatabase(self, ip):
+        
+
+
+
+#TODO: figure out the other methods.
+# - database schema.
