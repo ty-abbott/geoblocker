@@ -6,6 +6,25 @@ class data:
     conn = sqlite3.connect('data/ip.db')
     cursor = conn.cursor()
 
+    create_table_sql = '''
+    CREATE TABLE IF NOT EXISTS ip_information (
+        ip TEXT PRIMARY KEY,
+        count INTEGER 
+    );
+    '''
+    
+    create_table_sql2 = '''
+    CREATE TABLE IF NOT EXISTS traffic_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        ip TEXT,
+        port_from INTEGER,
+        port_visited INTEGER,
+        FOREIGN KEY(ip) REFERENCES ip_information(ip)
+    );
+    '''
+    cursor.execute(create_table_sql)
+    cursor.execute(create_table_sql2)
+
 
 
     def addAdapter(adapter):
@@ -24,6 +43,7 @@ class data:
         return
 
     def addDatabase(self, ip):
+
         
 
 
