@@ -20,8 +20,9 @@ class capture:
             self.threads[item.interface] = thread
             thread.start()
         
-        time.sleep(60)
-        self.captureStop()
+        
+        #time.sleep(60)
+        #self.captureStop()
         return 
 
 
@@ -58,8 +59,10 @@ class capture:
         
         while not stopEvent.is_set(): #we will do the actual packet capture here. The adding IP logic will be called from here. 
             print("listening")
-            packets = sniff(iface="eth0", count=1) 
+            print(interfaceName)
+            packets = sniff(iface=interfaceName, count=1) 
             for i in packets:
+                print("looking for packets")
                 if i.haslayer(IP):
                     print(i[IP].src)
                     checker(i[IP].src, stateObj)

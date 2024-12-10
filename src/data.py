@@ -36,15 +36,18 @@ class data:
             self.ip_dict[ip]["requests"] += 1
             return True
         self.ip_dict[ip] = {"requests": 1}
-        addDatabase()
+        addDatabase(ip)
         return False 
     
     def getAdapters(self):
         return
 
     def addDatabase(self, ip):
-
-        
+        add_ip_sql = '''
+            INSERT INTO ip_information (ip, count) values (?,?) 
+            '''
+        self.cursor.execute(add_ip_sql, ip, 1)
+        self.conn.commit()
 
 
 

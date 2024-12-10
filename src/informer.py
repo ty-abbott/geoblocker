@@ -18,6 +18,7 @@ def checker(ip, stateObj):
         if isThere == True:
             return 
         else: 
-            #do stuff
+            return
+    #logging should be updated here
     return
 #TODO - basically figure out the do stuff and test that this works
