@@ -2,7 +2,7 @@ import logging
 from capture_stage import *
 from parameters import parameters
 from data import data
-
+from fastapi import FastAPI, WebSocket
 
 def main():
     '''
@@ -13,6 +13,9 @@ def main():
      - get the list of IPs that are currently in the buffer for analysis 
       
     '''
+    app = FastAPI()
+
+
     #get the adapters from database and if there are some returned then we can skip the getting of the paramters via function 
     db = data()
 
@@ -24,8 +27,10 @@ def main():
         adapterList = paramObject.adapterList
     #when and where to save the interfaces to the database? 
 
-
-
+    @app.get("/")
+    def read_root():
+        return("hello": "world")
+#we are changing up the design. This will be easier, scalable, better
 
     
 

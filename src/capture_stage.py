@@ -12,8 +12,9 @@ class capture:
 #pass in the data object so that it can be sent to informer ---- we may need a constructor for this class to initilize it outright
     def captureStart(self, adapterList: list, stateObj: data) -> None:
         
+        
         for i in range(len(adapterList)):
-            item = interface(adapterList[i])
+            item = interface(adapterList[i]) #might no longer need the interface class if we can just use a list of interfaces 
             stopEvent = threading.Event()
             self.stop_events[item.interface] = stopEvent
             thread = threading.Thread(target=self.getListIP, args=(item.interface,stopEvent,stateObj))
@@ -52,15 +53,15 @@ class capture:
 
         for i in self.threads.values():
             i.join()
-            
-
+           # https://stackoverflow.com/questions/30185925/scapy-sniffing-2-interfaces-out-of-three
+           # https://docs.python.org/2/library/multiprocessing.html#multiprocessing.Process.daemon
     def getListIP(self, interfaceName, stopEvent, stateObj):
         #here is where we will get the set of IPs 
         
         while not stopEvent.is_set(): #we will do the actual packet capture here. The adding IP logic will be called from here. 
             print("listening")
             print(interfaceName)
-            packets = sniff(iface=interfaceName, count=1) 
+            packets = sniff(iface=interfaceName) #can be a list of interfaces 
             for i in packets:
                 print("looking for packets")
                 if i.haslayer(IP):
