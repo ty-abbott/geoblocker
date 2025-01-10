@@ -1,25 +1,21 @@
 import threading
 import time 
 from scapy.all import *
+import sys
 
-def fun1():
-    print("Working1")
-def fun2():
-    print("Working2")
+def collect(interface1):
+    while(True):
+        #create websocket connection
+        #error handling with that 
+        #start gathering from the interfaces 
+        #figure out logic to only do new IPs 
+        #send in websocket call to the server via the websocket
 
-
-
-
-
+#REMEMBER WE CAN GIVE A LIST OF INTERFACES
 
 def main():
-
-    ``
-    t1 = Thread(target=fun1)
-    t2 = Thread(target=fun2)
-
-    t1.start()
-    t2.start()
+    interface1 ="en1"
+    collect(interface1)
 
 
 

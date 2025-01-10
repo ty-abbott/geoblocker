@@ -1,0 +1,35 @@
+'''
+import threading
+import time
+
+def loop_function():
+    while True:
+        print("Loop running...")
+        time.sleep(1)
+
+def input_function():
+    while True:
+        user_input = input("Enter a command: ")
+        if user_input == "quit":
+            break
+        print("Command:", user_input)
+
+# Create threads for each function
+loop_thread = threading.Thread(target=loop_function)
+input_thread = threading.Thread(target=input_function)
+
+# Start the threads
+loop_thread.start()
+input_thread.start()
+
+# Wait for the input thread to finish (e.g., when the user types "quit")
+input_thread.join()
+
+# Stop the loop thread
+loop_thread.join()
+
+'''
+
+'''
+Essentially we will have one while loop, it is collecting the IP addresses and sending them to the API server. It is going to be a constant websocket connection. When there is a stop command this connection will get that command and then have the gathering GRACEFULLY stop. It will return to the main thread and do whatever is necessary, which I believe will mostly just be ending the process
+'''
