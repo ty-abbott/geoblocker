@@ -31,8 +31,9 @@ def main():
     def read_root():
         return("hello": "world")
 #we are changing up the design. This will be easier, scalable, better
-
-    
+    @app.get("/addInterface") 
+    def add_interface():
+        
 
 
 #the above will essentially just return an object of data that we will need to get this party started 
