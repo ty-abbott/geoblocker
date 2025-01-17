@@ -4,7 +4,7 @@ from parameters import parameters
 from data import data
 from fastapi import FastAPI, WebSocket
 
-
+stop = False
 
 app = FastAPI()
 
@@ -24,6 +24,7 @@ class ConnectionManager:
             await connection.send_text(message)
 
 manager = ConnectionManager()
+db = data()
 
 @app.get("/")
 def read_root():
@@ -38,65 +39,26 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.recieve_text()
-            #do checks and store data 
+            print("here we are")
+            print(data)#do checks and store data 
             #have a check here to see if we should keep recieving or if we need to do a stop for state reasons(report, whatever else)
             if stop == True:
                 manager.broadcast("Stop") #the magic word 
+                print("this should be stopping")
                 #either on the client side have a timed stop or shut down the endpoint??
     except WebSocketDisconnect:
         #log that it had been disconnect
         #wait for reconnect? 
+@app.post("/stop")
+def stop():
+    stop = True
 
-
-def main():
     '''
     load state
      
     From state:
-     - get the network adapters that will be monitored
      - get the list of IPs that are currently in the buffer for analysis 
       
     '''
 
 
-    #get the adapters from database and if there are some returned then we can skip the getting of the paramters via function 
-    db = data()
-
-    adapterList = db.getAdapters()
-    
-    if not adapterList:
-        paramObject = parameters()
-        paramObject.getParams()
-        adapterList = paramObject.adapterList
-    #when and where to save the interfaces to the database? 
-
-#the above will essentially just return an object of data that we will need to get this party started 
-# we can create this loop to just be checking for input, eventually there will be a systemd service that is running
-# so all we will need to do is have a command/alias that will gather the input here. 
-    while True:
-        try:
-            logging.info("running")
-            capObj = capture()
-            capObj.captureStart(adapterList, db)
-
-            command = input()
-            match command:
-                case "add":
-                    continue
-                case "list":
-                      continue
-                case "report":
-                    continue
-                case "stop":
-                    continue
-
-
-
-            #this will create a unique list of IP addresses that can be used for the analysis  
-
-        
-        except Exception as e:
-            logging.error(f"Error occured: {e}")
-
-if __name__ == "__main__":
-    main()
