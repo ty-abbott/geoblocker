@@ -36,7 +36,7 @@ class data:
             self.ip_dict[ip]["requests"] += 1
             return True
         self.ip_dict[ip] = {"requests": 1}
-        addDatabase(ip)
+        self.addDatabase(ip)
         return False 
     
     def getAdapters(self):

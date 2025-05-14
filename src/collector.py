@@ -15,9 +15,9 @@ def process_packet(pkt):
     #right now we will gather IP, dst Port, and Protocol 
     
 async def collect(interface1):
-    async with websockets.connect("URL") as websocket:
-        recv_task = asyncio.create_task(recieve_stop(websocket))
-        sniff(iface=interface1, stop_filter=is_stop, prn=process_packet)
+    async with websockets.connect("URL") as websocket:#we connect to the server via websocker
+        recv_task = asyncio.create_task(recieve_stop(websocket)) #we create a new task with a coroutine, this coroutine is running and waiting for a stop
+        sniff(iface=interface1, stop_filter=is_stop, prn=process_packet) #sniff and then use the recv_task to send to server. This sniff may not work because im not sure stop_filter is a possible param
 
         #create websocket connection
         #error handling with that 
@@ -29,10 +29,10 @@ async def recieve_stop(websocket):
     while True:
         message = await websocket.recv()
         if message == "Stop":
-            loop_bool = True
+            loop_bool = True #the actual stop logic, loop_bool might be pointless. This all looks for a message stop and then should stop sending stuff and look to reconnect 
 def main():
     interface1 ="en1"
-    async.run(collect(interface1))
+    asyncio.run(collect(interface1))
 
 
 
